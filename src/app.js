@@ -29,9 +29,9 @@ function App({ store }) {
                 >
                   <div className='Item-code'>{item.code}</div>
                   <div className='Item-title'>
-                    {item.title}{' '}
+                    {item.title}
                     {item.selectionCount > 0 &&
-                      `${i18next.t('amount', {
+                      ` | Выделяли ${i18next.t('amount', {
                         count: item.selectionCount
                       })}`}
                   </div>

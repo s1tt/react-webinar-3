@@ -5,9 +5,9 @@ i18next.init({
   resources: {
     ru: {
       translation: {
-        amount_one: '| Выделяли {{count}} раз',
-        amount_few: '| Выделяли {{count}} раза',
-        amount_many: '| Выделяли {{count}} раз'
+        amount_one: '{{count}} раз',
+        amount_few: '{{count}} раза',
+        amount_many: '{{count}} раз'
       }
     }
   }
