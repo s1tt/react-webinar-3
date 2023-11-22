@@ -1,4 +1,5 @@
 import React from 'react';
+import i18next from './i18n.js';
 import './styles.css';
 
 /**
@@ -30,7 +31,9 @@ function App({ store }) {
                   <div className='Item-title'>
                     {item.title}{' '}
                     {item.selectionCount > 0 &&
-                      `| Выделяли ${item.selectionCount} раз`}
+                      `${i18next.t('amount', {
+                        count: item.selectionCount
+                      })}`}
                   </div>
                   <div className='Item-actions'>
                     <button onClick={() => store.deleteItem(item.code)}>

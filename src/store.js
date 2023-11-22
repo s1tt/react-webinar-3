@@ -5,6 +5,7 @@ class Store {
   constructor(initState = {}) {
     this.state = initState;
     this.listeners = []; // Слушатели изменений состояния
+    this.state.actualCode = this.state.list?.length || 0;
   }
 
   /**
@@ -42,11 +43,12 @@ class Store {
    * Добавление новой записи
    */
   addItem() {
-    const newCode = this.generateUniqueCode();
+    const newCode = this.state.actualCode + 1;
     const newNote = { code: newCode, title: 'Новая запись' };
 
     this.setState({
       ...this.state,
+      actualCode: newCode,
       list: this.state.list ? [...this.state.list, newNote] : [newNote]
     });
   }
@@ -56,12 +58,9 @@ class Store {
    * @param code
    */
   deleteItem(code) {
-    const deletedCodes = this.state.deletedCodes || [];
-
     this.setState({
       ...this.state,
-      list: this.state.list.filter(item => item.code !== code),
-      deletedCodes: [...deletedCodes, code] // Добавляем код в список удаленных
+      list: this.state.list.filter(item => item.code !== code)
     });
   }
 
@@ -92,21 +91,6 @@ class Store {
    * Генерация уникального кода, учитывая удаленные записи
    * @returns {number}
    */
-  generateUniqueCode() {
-    const existingCodes = this.state.list?.map(item => item.code) || [];
-    const deletedCodes = this.state.deletedCodes || [];
-
-    // Объединяем существующие и удаленные коды
-    const allCodes = [...existingCodes, ...deletedCodes];
-
-    let newCode = 1;
-
-    while (allCodes.includes(newCode)) {
-      newCode++;
-    }
-
-    return newCode;
-  }
 }
 
 export default Store;
