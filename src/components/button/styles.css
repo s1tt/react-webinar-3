@@ -1,0 +1,8 @@
+.Button {
+  padding: 3px 8px 2px 9px;
+  font-size: 13px;
+}
+
+.Button:hover {
+  cursor: pointer;
+}

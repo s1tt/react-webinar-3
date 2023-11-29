@@ -1,7 +1,8 @@
-import React, {useCallback} from 'react';
-import List from "./components/list";
-import Controls from "./components/controls";
+import React, { useCallback, useEffect, useState } from "react";
+import CartSummary from "./components/cartSummary";
 import Head from "./components/head";
+import List from "./components/list";
+import Modal from "./components/modal";
 import PageLayout from "./components/page-layout";
 
 /**
@@ -9,32 +10,58 @@ import PageLayout from "./components/page-layout";
  * @param store {Store} Хранилище состояния приложения
  * @returns {React.ReactElement}
  */
-function App({store}) {
+function App({ store }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [quantityOfGoods, setQuantityOfGoods] = useState(0);
+  const [finalPrice, setFinalPrice] = useState(0);
+  const { list = [], cart = [] } = store.getState();
 
-  const list = store.getState().list;
+  useEffect(() => {
+    const sum = cart.reduce(
+      (acc, product) => acc + product.price * product.quantity,
+      0
+    );
+
+    setFinalPrice(sum);
+    setQuantityOfGoods(cart.length);
+  }, [cart]);
 
   const callbacks = {
-    onDeleteItem: useCallback((code) => {
-      store.deleteItem(code);
-    }, [store]),
+    onDeleteItem: useCallback(
+      (code) => {
+        store.deleteItem(code);
+      },
+      [store]
+    ),
 
-    onSelectItem: useCallback((code) => {
-      store.selectItem(code);
-    }, [store]),
-
-    onAddItem: useCallback(() => {
-      store.addItem();
-    }, [store])
-  }
+    onAddItem: useCallback(
+      (productId) => {
+        store.addItem(productId);
+      },
+      [store]
+    ),
+  };
 
   return (
-    <PageLayout>
-      <Head title='Приложение на чистом JS'/>
-      <Controls onAdd={callbacks.onAddItem}/>
-      <List list={list}
-            onDeleteItem={callbacks.onDeleteItem}
-            onSelectItem={callbacks.onSelectItem}/>
-    </PageLayout>
+    <>
+      <PageLayout>
+        <Head title="Магазин" />
+        <CartSummary
+          setIsModalOpen={setIsModalOpen}
+          isModalOpen={isModalOpen}
+          quantityOfGoods={quantityOfGoods}
+          finalPrice={finalPrice}
+        />
+        <List list={list} action={callbacks.onAddItem} />
+      </PageLayout>
+      <Modal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        cart={cart}
+        action={callbacks.onDeleteItem}
+        finalPrice={finalPrice}
+      />
+    </>
   );
 }
 

@@ -2,24 +2,31 @@
   display: flex;
   justify-content: flex-start;
   transition: background-color 1s;
+  padding: 17px 21px 20px 19px;
+  gap: 13px;
 }
 
-.Item_selected {
-  background: #75aaf1;
-  color: #fff;
-}
-
-.Item-code {
-  padding: 20px 10px 20px 20px;
+.Item-modal {
+  gap: 24px;
 }
 
 .Item-title {
   width: 100%;
-  padding: 20px 10px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.Item-title p {
+  margin: 0;
 }
 
 .Item-actions {
   display: flex;
   justify-content: flex-end;
-  padding: 20px 20px 20px 10px;
+}
+
+.Item-details {
+  font-size: 18px;
+  display: flex;
+  gap: 67px;
 }

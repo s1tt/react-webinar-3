@@ -1,0 +1,30 @@
+.CartSummary {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 0 22px;
+  margin-right: 21px;
+  font-size: 18px;
+}
+
+.CartSummary-modal {
+  margin-right: 116px;
+  padding: 25px 0 22px;
+}
+
+.CartSummary-content {
+  display: flex;
+  gap: 15px;
+}
+
+.CartSummary-content-modal {
+  gap: 50px;
+}
+
+.CartSummary-title {
+  font-size: 18px;
+}
+
+.CartSummary-sum {
+  margin-right: 5px;
+  font-size: 18px;
+}
