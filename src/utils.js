@@ -64,3 +64,14 @@ export const getLocalPrice = (price) => {
     maximumFractionDigits: 0,
   });
 };
+
+/**
+ * Возвращает общую сумму товаров в корзине
+ * @returns {Number}
+ */
+export const getFinalPrice = (cart = []) => {
+  return cart.reduce(
+    (acc, product) => acc + product.price * product.quantity,
+    0
+  );
+};

@@ -1,23 +1,16 @@
-import PropTypes from "prop-types";
+import PropTypes, { number } from "prop-types";
 import React from "react";
 import { getLocalPrice, plural } from "../../utils";
 import Button from "../button";
 import "./style.css";
 
-const CartSummary = ({
-  setIsModalOpen,
-  isModalOpen,
-  finalPrice,
-  quantityOfGoods,
-}) => {
-  if (isModalOpen) {
+const CartSummary = ({ setIsModalOpen, cartSummary, type }) => {
+  const { finalPrice = 0, quantityOfGoods = 0 } = cartSummary;
+
+  if (type === "modal") {
     return (
-      <div className={`CartSummary ${isModalOpen ? "CartSummary-modal" : ""}`}>
-        <div
-          className={`CartSummary-content ${
-            isModalOpen ? "CartSummary-content-modal" : ""
-          }`}
-        >
+      <div className="CartSummary CartSummary-modal">
+        <div className="CartSummary-content CartSummary-content-modal">
           <b className="CartSummary-sum">Итого</b>
           <b className="CartSummary-sum">{getLocalPrice(finalPrice)}</b>
         </div>
@@ -47,10 +40,13 @@ const CartSummary = ({
 };
 
 CartSummary.propTypes = {
-  isModalOpen: PropTypes.bool.isRequired,
+  cartSummary: PropTypes.shape({
+    finalPrice: number,
+    quantityOfGoods: number,
+  }).isRequired,
+
   setIsModalOpen: PropTypes.func,
-  finalPrice: PropTypes.number.isRequired,
-  quantityOfGoods: PropTypes.number,
+  type: PropTypes.oneOf(["modal", "page"]).isRequired,
 };
 
 CartSummary.defaultProps = {

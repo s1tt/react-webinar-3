@@ -2,8 +2,8 @@
   display: flex;
   justify-content: flex-start;
   transition: background-color 1s;
-  padding: 17px 21px 20px 19px;
-  gap: 13px;
+  padding: 20px 21px 16px 19px;
+  gap: 20px;
 }
 
 .Item-modal {

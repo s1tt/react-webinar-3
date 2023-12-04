@@ -1,12 +1,10 @@
 import PropTypes from "prop-types";
 import React from "react";
 import Button from "../button";
-import CartSummary from "../cartSummary";
 import Head from "../head";
-import List from "../list";
 import "./style.css";
 
-const Modal = ({ isModalOpen, cart, setIsModalOpen, action, finalPrice }) => {
+const Modal = ({ isModalOpen, setIsModalOpen, children, modalTitle }) => {
   const handleOverlayClick = (e) => {
     if (e.target.className === "Modal") setIsModalOpen(false);
   };
@@ -15,17 +13,10 @@ const Modal = ({ isModalOpen, cart, setIsModalOpen, action, finalPrice }) => {
     return (
       <div className="Modal" onClick={(e) => handleOverlayClick(e)}>
         <div className="Modal-wrapper">
-          <Head title="Корзина">
+          <Head title={modalTitle}>
             <Button onClick={() => setIsModalOpen(false)}>Закрыть</Button>
           </Head>
-          {cart.length > 0 ? (
-            <>
-              <List list={cart} isModalOpen={isModalOpen} action={action} />
-              <CartSummary isModalOpen={isModalOpen} finalPrice={finalPrice} />
-            </>
-          ) : (
-            <h2 className="Modal-empty">Корзина пуста</h2>
-          )}
+          {children}
         </div>
       </div>
     );
@@ -33,23 +24,14 @@ const Modal = ({ isModalOpen, cart, setIsModalOpen, action, finalPrice }) => {
 };
 
 Modal.propTypes = {
-  cart: PropTypes.arrayOf(
-    PropTypes.shape({
-      code: PropTypes.number,
-      title: PropTypes.string,
-      price: PropTypes.number,
-      quantity: PropTypes.number,
-    })
-  ).isRequired,
+  children: PropTypes.node,
   isModalOpen: PropTypes.bool.isRequired,
   setIsModalOpen: PropTypes.func.isRequired,
-  action: PropTypes.func.isRequired,
-  finalPrice: PropTypes.number.isRequired,
+  modalTitle: PropTypes.string.isRequired,
 };
 
 Modal.defaultProps = {
   setIsModalOpen: () => {},
-  action: () => {},
 };
 
 export default Modal;

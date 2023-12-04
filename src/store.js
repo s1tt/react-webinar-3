@@ -1,3 +1,5 @@
+import { getFinalPrice } from "./utils";
+
 /**
  * Хранилище состояния приложения
  */
@@ -42,32 +44,34 @@ class Store {
    * Добавление новой записи
    */
   addItem(productId) {
-    const cart = this.state.cart || [];
+    const cart = this.state.cart?.goods || [];
 
     const existingItem = cart.find((product) => product.code === productId);
 
+    let updatedGoods;
     if (existingItem) {
-      const updatedCart = cart.map((product) => {
-        return product.code === productId
-          ? {
-              ...product,
-              quantity: product.quantity + 1,
-            }
-          : product;
-      });
-
-      this.setState({
-        ...this.state,
-        cart: updatedCart,
-      });
+      updatedGoods = cart.map((product) =>
+        product.code === productId
+          ? { ...product, quantity: product.quantity + 1 }
+          : product
+      );
     } else {
       const newItem = this.state.list.find((item) => item.code === productId);
-
-      this.setState({
-        ...this.state,
-        cart: [...cart, { ...newItem, quantity: 1 }],
-      });
+      updatedGoods = [...cart, { ...newItem, quantity: 1 }];
     }
+
+    const updatedCart = {
+      goods: updatedGoods,
+      cartSummary: {
+        finalPrice: getFinalPrice(updatedGoods),
+        quantityOfGoods: updatedGoods.length,
+      },
+    };
+
+    this.setState({
+      ...this.state,
+      cart: updatedCart,
+    });
   }
 
   /**
@@ -75,10 +79,20 @@ class Store {
    * @param code
    */
   deleteItem(productId) {
+    const updatedGoods =
+      this.state.cart?.goods.filter((item) => item.code !== productId) || [];
+
+    const updatedCart = {
+      goods: updatedGoods,
+      cartSummary: {
+        finalPrice: getFinalPrice(updatedGoods),
+        quantityOfGoods: updatedGoods.length,
+      },
+    };
+
     this.setState({
       ...this.state,
-      // Новый список, в котором не будет удаляемой записи
-      cart: this.state.cart.filter((item) => item.code !== productId),
+      cart: updatedCart,
     });
   }
 }

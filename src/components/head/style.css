@@ -9,3 +9,7 @@
 .Head h1 {
   margin: 0;
 }
+
+.Head-action {
+  margin-top: 6px;
+}

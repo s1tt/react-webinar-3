@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import CartSummary from "./components/cartSummary";
 import Head from "./components/head";
 import List from "./components/list";
@@ -12,19 +12,8 @@ import PageLayout from "./components/page-layout";
  */
 function App({ store }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [quantityOfGoods, setQuantityOfGoods] = useState(0);
-  const [finalPrice, setFinalPrice] = useState(0);
-  const { list = [], cart = [] } = store.getState();
-
-  useEffect(() => {
-    const sum = cart.reduce(
-      (acc, product) => acc + product.price * product.quantity,
-      0
-    );
-
-    setFinalPrice(sum);
-    setQuantityOfGoods(cart.length);
-  }, [cart]);
+  const { list = [], cart: { goods = [], cartSummary = {} } = {} } =
+    store.getState();
 
   const callbacks = {
     onDeleteItem: useCallback(
@@ -48,19 +37,29 @@ function App({ store }) {
         <Head title="Магазин" />
         <CartSummary
           setIsModalOpen={setIsModalOpen}
-          isModalOpen={isModalOpen}
-          quantityOfGoods={quantityOfGoods}
-          finalPrice={finalPrice}
+          cartSummary={cartSummary}
+          type="page"
         />
         <List list={list} action={callbacks.onAddItem} />
       </PageLayout>
       <Modal
+        modalTitle="Корзина"
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        cart={cart}
-        action={callbacks.onDeleteItem}
-        finalPrice={finalPrice}
-      />
+      >
+        {goods.length ? (
+          <>
+            <List
+              list={goods}
+              isModalOpen={isModalOpen}
+              action={callbacks.onDeleteItem}
+            />
+            <CartSummary cartSummary={cartSummary} type="modal" />
+          </>
+        ) : (
+          <h2 className="Modal-empty">Корзина пуста</h2>
+        )}
+      </Modal>
     </>
   );
 }
