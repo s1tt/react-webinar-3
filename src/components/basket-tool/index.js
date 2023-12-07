@@ -1,25 +1,36 @@
-import {memo} from "react";
-import PropTypes from 'prop-types';
-import {cn as bem} from '@bem-react/classname';
-import {numberFormat, plural} from "../../utils";
-import './style.css';
+import { cn as bem } from "@bem-react/classname";
+import PropTypes from "prop-types";
+import { memo } from "react";
+import { Link } from "react-router-dom";
+import useSelector from "../../store/use-selector";
+import { numberFormat } from "../../utils";
+import "./style.css";
 
-function BasketTool({sum, amount, onOpen}) {
-  const cn = bem('BasketTool');
+function BasketTool({ sum, amount, onOpen, clearProductData }) {
+  const cn = bem("BasketTool");
+
+  const select = useSelector((state) => ({
+    mainLink: state.language.texts.mainLink,
+    inBasket: state.language.texts.inBasket,
+    good: state.language.texts.good,
+    openModal: state.language.texts.openModal,
+    empty: state.language.texts.empty,
+  }));
+
   return (
     <div className={cn()}>
-      <span className={cn('label')}>В корзине:</span>
-      <span className={cn('total')}>
-        {amount
-          ? `${amount} ${plural(amount, {
-            one: 'товар',
-            few: 'товара',
-            many: 'товаров'
-          })} / ${numberFormat(sum)} ₽`
-          : `пусто`
-        }
-      </span>
-      <button onClick={onOpen}>Перейти</button>
+      <Link className={cn("link")} to={"/"} onClick={() => clearProductData()}>
+        {select.mainLink}
+      </Link>
+      <div>
+        <span className={cn("label")}>{select.inBasket}</span>
+        <span className={cn("total")}>
+          {amount
+            ? `${amount}  ${select.good(amount)} / ${numberFormat(sum)} ₽`
+            : `${select.empty}`}
+        </span>
+        <button onClick={onOpen}>{select.openModal}</button>
+      </div>
     </div>
   );
 }
@@ -27,13 +38,13 @@ function BasketTool({sum, amount, onOpen}) {
 BasketTool.propTypes = {
   onOpen: PropTypes.func.isRequired,
   sum: PropTypes.number,
-  amount: PropTypes.number
+  amount: PropTypes.number,
 };
 
 BasketTool.defaultProps = {
   onOpen: () => {},
   sum: 0,
-  amount: 0
-}
+  amount: 0,
+};
 
 export default memo(BasketTool);

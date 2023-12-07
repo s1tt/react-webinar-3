@@ -1,0 +1,29 @@
+.product {
+  margin: 20px 40px 40px 40px;
+  color: #000;
+  font-family: Arial;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.product p {
+  margin: 0;
+}
+
+.product span {
+  font-weight: 700;
+}
+
+.product-price {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.product-btn {
+  align-self: flex-start;
+}

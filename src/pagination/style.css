@@ -1,0 +1,28 @@
+.pagination {
+  list-style-type: none;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 22px;
+  margin: 22px 22px 22px;
+}
+
+.pagination-item {
+  margin: 0;
+  padding: 1px 6px;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  font-size: 16px;
+}
+
+.pagination-item:hover {
+  background-color: #e1e1e1;
+  color: #000;
+}
+
+.selected,
+.selected:hover {
+  background-color: #0087e9;
+  color: #fff;
+  cursor: default;
+}
