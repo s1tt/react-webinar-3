@@ -24,4 +24,5 @@ export const ru = {
   yearOfProduction: "Год выпуска:",
   price: "Цена:",
   changeLanguage: "English",
+  productNotFound: "Продукт не найден",
 };

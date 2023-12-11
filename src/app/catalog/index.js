@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
+import Item from "../../components/item";
+import List from "../../components/list";
 import Pagination from "../../pagination";
 import useSelector from "../../store/use-selector";
 import useStore from "../../store/use-store";
-import Item from "../item";
-import List from "../list";
 
 const Catalog = () => {
   const store = useStore();

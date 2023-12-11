@@ -1,9 +1,9 @@
 import { cn as bem } from "@bem-react/classname";
 import PropTypes from "prop-types";
 import { memo } from "react";
-import { Link } from "react-router-dom";
 import useSelector from "../../store/use-selector";
 import { numberFormat } from "../../utils";
+import Navigation from "../navigation";
 import "./style.css";
 
 function BasketTool({ sum, amount, onOpen, clearProductData }) {
@@ -19,9 +19,10 @@ function BasketTool({ sum, amount, onOpen, clearProductData }) {
 
   return (
     <div className={cn()}>
-      <Link className={cn("link")} to={"/"} onClick={() => clearProductData()}>
-        {select.mainLink}
-      </Link>
+      <Navigation
+        clearProductData={clearProductData}
+        mainLinkText={select.mainLink}
+      />
       <div>
         <span className={cn("label")}>{select.inBasket}</span>
         <span className={cn("total")}>

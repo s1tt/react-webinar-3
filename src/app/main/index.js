@@ -1,15 +1,14 @@
 import { memo, useCallback, useEffect } from "react";
-import { Outlet } from "react-router-dom";
 import BasketTool from "../../components/basket-tool";
 import Head from "../../components/head";
 import PageLayout from "../../components/page-layout";
 import useSelector from "../../store/use-selector";
 import useStore from "../../store/use-store";
-import Basket from "../basket";
+import Catalog from "../catalog";
 
 function Main() {
   const store = useStore();
-  const activeModal = useSelector((state) => state.modals.name);
+  // const activeModal = useSelector((state) => state.modals.name);
 
   useEffect(() => {
     store.actions.catalog.load();
@@ -23,7 +22,7 @@ function Main() {
     totalItems: state.catalog.totalItems,
     productTitle: state.product?.title || "",
 
-    store: state.language.texts.pageName,
+    pageTitle: state.language.texts.pageName,
   }));
 
   const callbacks = {
@@ -62,18 +61,15 @@ function Main() {
   return (
     <>
       <PageLayout>
-        <Head title={`${select.productTitle}` || select.store} />
+        <Head title={select.pageTitle} />
         <BasketTool
           onOpen={callbacks.openModalBasket}
           amount={select.amount}
           sum={select.sum}
           clearProductData={callbacks.clearProductData}
         />
-        <Outlet
-          context={[callbacks.loadProductDetails, callbacks.addToBasket, store]}
-        />
+        <Catalog />
       </PageLayout>
-      {activeModal === "basket" && <Basket />}
     </>
   );
 }

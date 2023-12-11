@@ -6,14 +6,6 @@
   font-size: 18px;
 }
 
-.BasketTool-link {
-  color: #0087e9;
-}
-
-.BasketTool-link:hover {
-  opacity: 0.6;
-}
-
 .BasketTool-total {
   font-weight: bold;
   margin: 0 20px;
