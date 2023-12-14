@@ -7,13 +7,13 @@
  * @param [locale] {String} Локаль (код языка)
  * @returns {String}
  */
-export function plural(value, variants = {}, locale = 'ru-RU') {
+export function plural(value, variants = {}, locale = "ru-RU") {
   // Получаем фурму кодовой строкой: 'zero', 'one', 'two', 'few', 'many', 'other'
   // В русском языке 3 формы: 'one', 'few', 'many', и 'other' для дробных
   // В английском 2 формы: 'one', 'other'
   const key = new Intl.PluralRules(locale).select(value);
   // Возвращаем вариант по ключу, если он есть
-  return variants[key] || '';
+  return variants[key] || "";
 }
 
 /**
@@ -30,6 +30,30 @@ export function codeGenerator(start = 0) {
  * @param options {Object}
  * @returns {String}
  */
-export function numberFormat(value, locale = 'ru-RU', options = {}) {
+export function numberFormat(value, locale = "ru-RU", options = {}) {
   return new Intl.NumberFormat(locale, options).format(value);
+}
+
+export function buildCategoryTree(categories, parentId = null, depth = 0) {
+  const result = [];
+
+  for (const category of categories) {
+    if (
+      (parentId === null && category.parent === null) ||
+      (category.parent && category.parent._id === parentId)
+    ) {
+      const item = {
+        value: category._id, // Замените на нужное значение идентификатора, если нужно
+        title: `${"-".repeat(depth)} ${category.title}`,
+        depth: depth,
+      };
+
+      result.push(item);
+
+      const children = buildCategoryTree(categories, category._id, depth + 1);
+      result.push(...children);
+    }
+  }
+
+  return result;
 }
