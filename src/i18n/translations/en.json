@@ -1,4 +1,12 @@
 {
+  "login": "Login",
+  "loginBtn": "Login",
+  "password": "Password",
+  "profile": "Profile",
+  "name": "Name",
+  "phone": "Phone",
+  "email": "Email",
+  "logout": "Logout",
   "title": "Shop",
   "menu.main": "Main",
   "basket.title": "Cart",

@@ -31,3 +31,8 @@
 .SideLayout-item {
   margin: 0 5px;
 }
+
+.SideLayout_flexDirectionColumn_true {
+  align-items: flex-start;
+  flex-direction: column;
+}
