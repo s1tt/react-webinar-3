@@ -51,7 +51,6 @@ function CatalogFilter() {
     ),
     categories: useMemo(() => {
       const categories = buildCategoryTree(select.categories, null);
-      console.log(categories);
       return [{ value: "", title: "Все" }, ...categories];
     }, [select.categories]),
   };

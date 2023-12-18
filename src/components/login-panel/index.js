@@ -1,36 +1,22 @@
-import React, { useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import useSelector from "../../hooks/use-selector";
-import useStore from "../../hooks/use-store";
+import React from "react";
+import { Link } from "react-router-dom";
 import "./style.css";
 
-const LoginPanel = () => {
-  const navigate = useNavigate();
-  const store = useStore();
-
-  const select = useSelector((state) => ({
-    isAuthorized: state.login.authorized,
-    userData: state.login.userData,
-  }));
-
-  const callbacks = {
-    onLogout: useCallback(() => {
-      store.actions.login.logOut();
-      navigate("/");
-    }, [store]),
-  };
+const LoginPanel = (props) => {
   return (
     <div className="loginPanel">
-      {select.isAuthorized ? (
+      {props.isAuthorized ? (
         <>
-          <Link to={"/profile"}>{select.userData.profile.name}</Link>
-          <button type="button" onClick={callbacks.onLogout}>
-            Выход
+          <Link className="loginPanel-profileLink" to={"/profile"}>
+            {props.userData.profile.name}
+          </Link>
+          <button type="button" onClick={props.onLogout}>
+            {props.t("logout")}
           </button>
         </>
       ) : (
-        <button type="button" onClick={() => navigate("/login")}>
-          Вход
+        <button type="button" onClick={() => props.navigate("/login")}>
+          {props.t("login")}
         </button>
       )}
     </div>

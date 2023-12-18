@@ -1,49 +1,50 @@
-import React, { useEffect } from "react";
+import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Head from "../../components/head";
+import LoginPanel from "../../components/login-panel";
 import PageLayout from "../../components/page-layout";
-import SideLayout from "../../components/side-layout";
+import ProfileLayout from "../../components/profile-layout";
+import Spinner from "../../components/spinner";
 import LocaleSelect from "../../containers/locale-select";
 import Navigation from "../../containers/navigation";
 import useSelector from "../../hooks/use-selector";
+import useStore from "../../hooks/use-store";
 import useTranslate from "../../hooks/use-translate";
 
 const Profile = () => {
+  const store = useStore();
   const navigate = useNavigate();
   const select = useSelector((state) => ({
     isAuthorized: state.login.authorized,
     userData: state.login.userData,
-    article: state.article.data,
+    waiting: state.login.waiting,
   }));
 
-  // if (!select.isAuthorized) return null;
-
-  useEffect(() => {
-    if (!select.isAuthorized) {
-      navigate("/login");
-    }
-  }, [select.isAuthorized]);
+  const callbacks = {
+    onLogout: useCallback(() => {
+      store.actions.login.logOut();
+      navigate("/");
+    }, [store]),
+  };
 
   const { t } = useTranslate();
 
   return (
     <PageLayout>
-      <Head title={select.article.title}>
+      <LoginPanel
+        isAuthorized={select.isAuthorized}
+        userData={select.userData}
+        onLogout={callbacks.onLogout}
+        navigate={navigate}
+        t={t}
+      />
+      <Head title={t("title")}>
         <LocaleSelect />
       </Head>
       <Navigation />
-      <SideLayout padding="medium" flexDirectionColumn={"true"}>
-        <h3>{t("profile")}</h3>
-        <p>
-          {t("name")}: <strong>{select.userData.profile.name}</strong>
-        </p>
-        <p>
-          {t("phone")}: <strong>{select.userData.profile.phone}</strong>
-        </p>
-        <p>
-          {t("email")}: <strong>{select.userData.email}</strong>
-        </p>
-      </SideLayout>
+      <Spinner active={select.waiting}>
+        {select.userData && <ProfileLayout t={t} userData={select.userData} />}
+      </Spinner>
     </PageLayout>
   );
 };

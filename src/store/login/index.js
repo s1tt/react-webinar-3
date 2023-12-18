@@ -4,44 +4,49 @@ class LoginState extends StoreModule {
   initState() {
     return {
       authorized: false,
-      userData: {},
+      userData: null,
       error: null,
+      waiting: true,
     };
   }
 
   async getInfo() {
-    const token = JSON.parse(localStorage.getItem("token"));
+    try {
+      const token = JSON.parse(localStorage.getItem("token"));
 
-    if (!token) {
-      return;
+      if (token) {
+        const response = await fetch(`/api/v1/users/self?fields=*`, {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            "X-Token": token,
+          },
+        });
+
+        const json = await response.json();
+
+        if (json.result) {
+          this.setState({
+            ...this.getState(),
+            authorized: true,
+            userData: json.result,
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      this.setState({
+        ...this.getState(),
+        waiting: false,
+      });
     }
-
-    const response = await fetch(`/api/v1/users/self?fields=*`, {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        "X-Token": token,
-      },
-    });
-
-    const json = await response.json();
-
-    this.setState({
-      ...this.getState(),
-      authorized: true,
-      userData: json.result,
-    });
   }
 
   async login(login, password) {
-    console.log(`
-    login: ${login},
-      password: ${password},
-    `);
     const bodyReq = {
       login: login,
       password: password,
-      // "remember": true,
     };
 
     const response = await fetch(`/api/v1/users/sign`, {
@@ -59,6 +64,7 @@ class LoginState extends StoreModule {
       this.setState({
         ...this.getState(),
         error: json.error,
+        waiting: false,
       });
     } else {
       localStorage.setItem("token", JSON.stringify(json.result.token));
@@ -68,6 +74,7 @@ class LoginState extends StoreModule {
         authorized: true,
         userData: json.result.user,
         error: null,
+        waiting: false,
       });
     }
   }
@@ -86,11 +93,19 @@ class LoginState extends StoreModule {
     this.setState({
       ...this.getState(),
       authorized: false,
-      userData: {},
+      userData: null,
       error: null,
+      waiting: false,
     });
 
     localStorage.removeItem("token");
+  }
+
+  clearErrors() {
+    this.setState({
+      ...this.getState(),
+      error: null,
+    });
   }
 }
 

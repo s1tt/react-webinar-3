@@ -44,7 +44,7 @@ export function buildCategoryTree(categories, parentId = null, depth = 0) {
     ) {
       const item = {
         value: category._id, // Замените на нужное значение идентификатора, если нужно
-        title: `${"-".repeat(depth)} ${category.title}`,
+        title: `${"- ".repeat(depth)} ${category.title}`,
         depth: depth,
       };
 

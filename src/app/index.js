@@ -1,6 +1,6 @@
-import { useCallback } from "react";
+import { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import useInit from "../hooks/use-init";
+import ProtectedRoute from "../containers/protectedRoute";
 import useSelector from "../hooks/use-selector";
 import useStore from "../hooks/use-store";
 import Article from "./article";
@@ -19,36 +19,38 @@ function App() {
 
   const select = useSelector((state) => ({
     isAuthorized: state.login.authorized,
-    // getInfo: state.login.getInfo,
+    user: state.login.userData,
+    waiting: state.login.waiting,
   }));
 
-  const callbacks = {
-    getInfo: useCallback(() => {
-      store.actions.login.getInfo();
-    }, [store]),
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      await store.actions.login.getInfo();
+    };
+    fetchData();
+  }, []);
 
-  useInit(() => {
-    store.actions.login.getInfo();
-  }, [select.isAuthorized]);
-
-  // useLayoutEffect(() => {
-  //   callbacks.getInfo();
-  // }, []);
-  console.log("render");
   return (
     <>
       <Routes>
-        <Route path={""} element={<Main />} />
+        <Route path={"/"} element={<Main />} />
         <Route path={"/articles/:id"} element={<Article />} />
-        <Route path={"/login"} element={<Login />} />
-        {console.log(select.isAuthorized)}
         <Route
-          path={"/profile"}
+          path={"/login"}
           element={
-            select.isAuthorized ? <Profile /> : <Navigate to={"/login"} />
+            select.isAuthorized ? <Navigate to={"/profile"} /> : <Login />
           }
-          // element={<Profile />}
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute
+              isAuthorized={select.isAuthorized}
+              waiting={select.waiting}
+            >
+              <Profile />
+            </ProtectedRoute>
+          }
         />
       </Routes>
 
