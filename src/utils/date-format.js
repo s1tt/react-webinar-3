@@ -1,4 +1,5 @@
-export const formatDate = (timestamp) => {
+export const formatDate = (timestamp, lang = "ru") => {
+  const currentLocale = lang === "ru" ? "ru-RU" : "en-US";
   const date = new Date(timestamp);
   const options = {
     year: "numeric",
@@ -9,7 +10,7 @@ export const formatDate = (timestamp) => {
   };
 
   const formattedDate = date
-    .toLocaleDateString("ru-RU", options)
+    .toLocaleDateString(currentLocale, options)
     .replace(/\s*г\./, "");
   return formattedDate;
 };

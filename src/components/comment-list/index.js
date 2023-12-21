@@ -14,10 +14,14 @@ const CommentList = ({
   submitForm,
   onReplyClick,
   onResetReplyForm,
+  t,
+  lang,
 }) => {
   return (
     <div className="commentList">
-      <h3 className="commentList-title">Комментарии ({commentsCount})</h3>
+      <h3 className="commentList-title">
+        {t("comments.title")} ({commentsCount})
+      </h3>
       {comments &&
         comments.map((comment) => (
           <CommentItem
@@ -32,6 +36,8 @@ const CommentList = ({
             setFormValue={setFormValue}
             formValue={formValue}
             submitForm={submitForm}
+            t={t}
+            lang={lang}
           />
         ))}
     </div>
@@ -49,6 +55,7 @@ CommentList.propTypes = {
   submitForm: PropTypes.func,
   onReplyClick: PropTypes.func,
   onResetReplyForm: PropTypes.func,
+  t: PropTypes.func,
 };
 
 CommentList.defaultProps = {
@@ -56,6 +63,7 @@ CommentList.defaultProps = {
   submitForm: () => {},
   onReplyClick: () => {},
   onResetReplyForm: () => {},
+  t: () => {},
 };
 
 export default CommentList;

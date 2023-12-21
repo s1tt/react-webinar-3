@@ -7,20 +7,21 @@ const CommentNotAuth = ({
   actionText,
   isResetButtonActive,
   onResetReplyForm,
+  t,
 }) => {
   return (
     <p className="commentNotAuth">
       <Link className="commentNotAuth-link" to={"/login"}>
-        Войдите
+        {t("comments.authErr.login")},
       </Link>
-      , чтобы иметь возможность {actionText}.
+      {t("comments.authErr.toBeAbleTo")} {actionText}
       {isResetButtonActive && (
         <button
           className="commentNotAuth-btn"
           type="button"
           onClick={onResetReplyForm}
         >
-          Отмена
+          {t("comments.cancelBtn")}
         </button>
       )}
     </p>

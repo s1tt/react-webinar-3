@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CommentForm from "../../components/comment-form";
 import CommentList from "../../components/comment-list";
 import CommentNotAuth from "../../components/comment-notAuth";
+import useTranslate from "../../hooks/use-translate";
 import articleActions from "../../store-redux/comments/actions";
 
 const Comments = ({
@@ -13,6 +14,7 @@ const Comments = ({
 }) => {
   const [selectedCommentId, setSelectedCommentId] = useState(null);
   const [formValue, setFormValue] = useState("");
+  const { t, lang } = useTranslate();
 
   const callbacks = {
     onReplyClick: (commentId) => {
@@ -44,6 +46,8 @@ const Comments = ({
         submitForm={callbacks.onSubmitForm}
         onReplyClick={callbacks.onReplyClick}
         onResetReplyForm={callbacks.onResetReplyForm}
+        t={t}
+        lang={lang}
       />
       {!!!selectedCommentId &&
         (isAuth ? (
@@ -51,10 +55,11 @@ const Comments = ({
             setFormValue={setFormValue}
             formValue={formValue}
             submitForm={callbacks.onSubmitForm}
-            label={"Новый комментарий"}
+            label={t("comments.newCommentTitle")}
+            t={t}
           />
         ) : (
-          <CommentNotAuth actionText={"комментировать"} />
+          <CommentNotAuth actionText={t("comments.authErr.comment")} t={t} />
         ))}
     </div>
   );

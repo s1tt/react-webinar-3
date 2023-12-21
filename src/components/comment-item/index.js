@@ -17,6 +17,8 @@ const CommentItem = ({
   setFormValue,
   formValue,
   submitForm,
+  t,
+  lang,
 }) => {
   return (
     <div className="comment" style={{ marginLeft: level * 30 }}>
@@ -30,12 +32,14 @@ const CommentItem = ({
         >
           {comment.author.profile.name}
         </span>
-        <span className="comment-date">{formatDate(comment.dateCreate)}</span>
+        <span className="comment-date">
+          {formatDate(comment.dateCreate, lang)}
+        </span>
       </div>
 
       <p className="comment-text">{comment.text}</p>
       <button className="comment-replyBtn" type="button" onClick={onReplyClick}>
-        Ответить
+        {t("comments.answerBtn")}
       </button>
       {isAuth
         ? isReplyFormVisible && (
@@ -44,16 +48,18 @@ const CommentItem = ({
               setFormValue={setFormValue}
               formValue={formValue}
               submitForm={submitForm}
-              label={"Новый ответ"}
+              label={t("comments.newReplyTitle")}
               isResetButtonActive={true}
               onResetReplyForm={onResetReplyForm}
+              t={t}
             />
           )
         : isReplyFormVisible && (
             <CommentNotAuth
-              actionText={"ответить"}
+              actionText={t("comments.authErr.reply")}
               isResetButtonActive={true}
               onResetReplyForm={onResetReplyForm}
+              t={t}
             />
           )}
 

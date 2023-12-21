@@ -11,6 +11,7 @@ const CommentForm = ({
   label,
   isResetButtonActive = false,
   onResetReplyForm,
+  t,
 }) => {
   const { id } = useParams();
   const parentId = isResetButtonActive ? commentId : id;
@@ -33,7 +34,7 @@ const CommentForm = ({
       ></textarea>
       <div className="commentForm-btns">
         <button className="commentForm-btn" type="submit">
-          Отправить
+          {t("comments.sendBtn")}
         </button>
         {isResetButtonActive && (
           <button
@@ -41,7 +42,7 @@ const CommentForm = ({
             type="button"
             onClick={onResetReplyForm}
           >
-            Отмена
+            {t("comments.cancelBtn")}
           </button>
         )}
       </div>

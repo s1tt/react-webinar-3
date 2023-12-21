@@ -14,11 +14,25 @@
     "other": "articles"
   },
   "article.add": "Add",
+  "article.country": "Manufacturer country",
+  "article.category": "Category",
+  "article.year": "Year of release",
+  "article.price": "Price",
   "filter.reset": "Reset",
   "auth.title": "Sign In",
   "auth.login": "Login",
   "auth.password": "Password",
   "auth.signIn": "Sign in",
   "session.signIn": "Sign In",
-  "session.signOut": "Sign Out"
+  "session.signOut": "Sign Out",
+  "comments.title": "Comments",
+  "comments.answerBtn": "Answer",
+  "comments.cancelBtn": "Cancel",
+  "comments.sendBtn": "Send",
+  "comments.newCommentTitle": "New comment",
+  "comments.newReplyTitle": "New reply",
+  "comments.authErr.login": "Login",
+  "comments.authErr.toBeAbleTo": "to be able to",
+  "comments.authErr.comment": "comment.",
+  "comments.authErr.reply": "reply."
 }
