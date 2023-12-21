@@ -27,10 +27,14 @@ function Article() {
 
   const params = useParams();
 
+  const { t, lang } = useTranslate();
+
   useInit(() => {
-    //store.actions.article.load(params.id);
-    dispatch(commentsActions.load(params.id));
     dispatch(articleActions.load(params.id));
+  }, [params.id, lang]);
+
+  useInit(() => {
+    dispatch(commentsActions.load(params.id));
   }, [params.id]);
 
   const selectRedux = useSelectorRedux(
@@ -48,8 +52,6 @@ function Article() {
     isAuth: state.session.exists,
     currentUsername: state.session.user.profile?.name || "",
   }));
-
-  const { t } = useTranslate();
 
   const callbacks = {
     // Добавление в корзину

@@ -12,7 +12,6 @@ export default {
         const res = await services.api.request({
           url: `api/v1/comments?fields=items(_id,text,dateCreate,author(profile(name)),parent(_id,_type),isDeleted),count&limit=*&search[parent]=${id}`,
         });
-        console.log(res.data.result);
         // Товар загружен успешно
         dispatch({
           type: "comments/load-success",
@@ -41,8 +40,6 @@ export default {
             },
           }),
         });
-
-        console.log(res.data.result);
 
         dispatch({
           type: "comments/add-comment",

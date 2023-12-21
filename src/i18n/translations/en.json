@@ -34,5 +34,15 @@
   "comments.authErr.login": "Login",
   "comments.authErr.toBeAbleTo": "to be able to",
   "comments.authErr.comment": "comment.",
-  "comments.authErr.reply": "reply."
+  "comments.authErr.reply": "reply.",
+  "profile.title": "Profile",
+  "profile.name": "Name",
+  "profile.phone": "Phone",
+  "profile.email": "email",
+  "catalogFilter.all": "All",
+  "catalogFilter.searchPlaceholder": "Search",
+  "catalogFilter.inOrder": "In order",
+  "catalogFilter.byNaming": "By naming",
+  "catalogFilter.dearsFirst": "Dears first",
+  "catalogFilter.ancients": "Ancients"
 }

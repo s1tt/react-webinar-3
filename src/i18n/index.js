@@ -27,9 +27,7 @@ class I18nService {
    * @param lang {string} Код языка
    */
   set lang(lang) {
-    console.log(lang);
     this.defaultLang = lang;
-    console.log(this.defaultLang);
     this.services.api.setHeader("Accept-Language", lang);
     for (const listener of this.listeners) listener(this.lang);
   }
@@ -41,7 +39,6 @@ class I18nService {
    * @returns {string} Переведенный текст
    */
   t(text, plural) {
-    console.log(this);
     const lang = this.defaultLang;
     let result =
       translations[lang] && text in translations[lang]
