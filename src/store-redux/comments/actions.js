@@ -27,17 +27,12 @@ export default {
 
   newComment: (parentId, type, text) => {
     return async (dispatch, getState, services) => {
-      const token = localStorage.getItem("token");
-      if (!token) return;
       dispatch({ type: "comments/load-comment" });
 
       try {
         const res = await services.api.request({
           url: `api/v1/comments?fields=author(_id, profile(name)),dateCreate,isDeleted,parent(_id,_type), text`,
           method: "POST",
-          headers: {
-            "X-Token": token,
-          },
           body: JSON.stringify({
             text,
             parent: {
