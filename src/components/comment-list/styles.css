@@ -1,0 +1,14 @@
+.comments {
+  padding: 0 40px 90px;
+}
+
+.commentList-title {
+  margin: 0;
+  color: #000;
+  font-family: Arial;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 25px;
+}

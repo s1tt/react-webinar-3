@@ -1,0 +1,60 @@
+.comment {
+  margin-bottom: 30px;
+}
+
+.comment-info {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.comment-user {
+  color: #000;
+  font-family: Arial;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.comment-currentUser {
+  color: #666;
+}
+
+.comment-date {
+  color: #666;
+  font-family: Arial;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.comment-text {
+  margin: 0;
+  color: #000;
+  font-family: Arial;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 6px;
+}
+
+.comment-replyBtn {
+  color: #0087e9;
+  font-family: Arial;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.comment-replyBtn:hover {
+  cursor: pointer;
+  opacity: 0.6;
+}

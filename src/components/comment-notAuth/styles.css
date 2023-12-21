@@ -1,0 +1,40 @@
+.commentNotAuth {
+  color: #000;
+  font-family: Arial;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0;
+  display: flex;
+  gap: 4px;
+  margin-top: 30px;
+}
+
+.commentNotAuth-link {
+  color: #0087e9;
+  text-decoration-line: underline;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.commentNotAuth-link:hover {
+  opacity: 0.6;
+}
+
+.commentNotAuth-btn {
+  border: 0;
+  padding: 0;
+  background-color: inherit;
+  color: #666;
+  font-family: Arial;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration-line: underline;
+  cursor: pointer;
+  transition: opacity 0.3s ease-in-out;
+}
+.commentNotAuth-btn:hover {
+  opacity: 0.6;
+}

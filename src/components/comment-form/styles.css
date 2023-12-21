@@ -1,0 +1,36 @@
+.commentForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 30px 0;
+}
+
+.commentForm-label {
+  color: #000;
+  font-family: Arial;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.commentForm-textarea {
+  padding: 5px;
+  resize: none;
+  height: 76px;
+  color: #000;
+  font-family: Arial;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.commentForm-btn {
+  align-self: flex-start;
+}
+
+.commentForm-btns {
+  display: flex;
+  gap: 10px;
+}
