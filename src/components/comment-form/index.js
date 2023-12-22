@@ -11,6 +11,7 @@ const CommentForm = ({
   label,
   isResetButtonActive = false,
   onResetReplyForm,
+  className,
   t,
 }) => {
   const { id } = useParams();
@@ -25,7 +26,9 @@ const CommentForm = ({
         {label}
       </label>
       <textarea
-        className="commentForm-textarea"
+        className={`commentForm-textarea ${
+          isResetButtonActive ? "" : "commentForm-mainTextarea"
+        }`}
         name="newComment"
         id="newComment"
         value={formValue}
