@@ -1,14 +1,15 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useMemo } from "react";
 import CommentItem from "../comment-item";
 import "./styles.css";
 
 const CommentList = ({
+  smoothScrollElementRef,
   currentUsername,
   comments,
   commentsCount,
   isAuth,
-  selectedCommentId,
+  selectedComment,
   setFormValue,
   formValue,
   submitForm,
@@ -17,29 +18,53 @@ const CommentList = ({
   t,
   lang,
 }) => {
+  const lastChild = useMemo(
+    () => (commentId) => {
+      const targetComment = comments.findLast(
+        (comment) => comment.parentId === commentId
+      );
+      if (targetComment) {
+        return lastChild(targetComment._id);
+      } else {
+        return commentId;
+      }
+    },
+    [comments]
+  );
+
+  const lastChildId = useMemo(
+    () => (selectedComment) => {
+      const selectedLastChild = selectedComment.lastChildId;
+      return lastChild(selectedLastChild || selectedComment._id);
+    },
+    [lastChild]
+  );
+
   return (
     <div className="commentList">
       <h3 className="commentList-title">
         {t("comments.title")} ({commentsCount})
       </h3>
-      {comments &&
-        comments.map((comment) => (
-          <CommentItem
-            key={comment._id}
-            currentUsername={currentUsername}
-            comment={comment}
-            level={comment.level}
-            isAuth={isAuth}
-            isReplyFormVisible={comment._id === selectedCommentId}
-            onReplyClick={() => onReplyClick(comment._id)}
-            onResetReplyForm={onResetReplyForm}
-            setFormValue={setFormValue}
-            formValue={formValue}
-            submitForm={submitForm}
-            t={t}
-            lang={lang}
-          />
-        ))}
+      {comments.map((comment) => (
+        <CommentItem
+          key={comment._id}
+          smoothScrollElementRef={smoothScrollElementRef}
+          selectedComment={selectedComment}
+          currentUsername={currentUsername}
+          comment={comment}
+          isAuth={isAuth}
+          isReplyFormVisible={
+            selectedComment && comment._id === lastChildId(selectedComment)
+          }
+          onReplyClick={onReplyClick}
+          onResetReplyForm={onResetReplyForm}
+          setFormValue={setFormValue}
+          formValue={formValue}
+          submitForm={submitForm}
+          t={t}
+          lang={lang}
+        />
+      ))}
     </div>
   );
 };
@@ -56,9 +81,11 @@ CommentList.propTypes = {
   onReplyClick: PropTypes.func,
   onResetReplyForm: PropTypes.func,
   t: PropTypes.func,
+  smoothScrollElementRef: PropTypes.object,
 };
 
 CommentList.defaultProps = {
+  smoothScrollElementRef: null,
   setFormValue: () => {},
   submitForm: () => {},
   onReplyClick: () => {},

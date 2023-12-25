@@ -3,84 +3,88 @@ import React from "react";
 import { formatDate } from "../../utils/date-format";
 import CommentForm from "../comment-form";
 import CommentLayout from "../comment-layout";
-import CommentList from "../comment-list";
 import CommentNotAuth from "../comment-notAuth";
 import "./styles.css";
 
 const CommentItem = ({
   currentUsername,
-  comment,
-  level,
+  formValue,
   isAuth,
   isReplyFormVisible,
+  comment,
   onReplyClick,
   onResetReplyForm,
   setFormValue,
-  formValue,
   submitForm,
+  smoothScrollElementRef,
+  selectedComment,
   t,
   lang,
 }) => {
   return (
-    <CommentLayout level={level}>
-      <div className="comment">
-        <div className="comment-info">
-          <span
-            className={`comment-user ${
-              comment.author.profile.name === currentUsername
-                ? "comment-currentUser"
-                : ""
-            }`}
+    <>
+      <CommentLayout level={comment.level}>
+        <div className="comment">
+          <div className="comment-info">
+            <span
+              className={`comment-user ${
+                comment.author.profile.name === currentUsername
+                  ? "comment-currentUser"
+                  : ""
+              }`}
+            >
+              {comment.author.profile.name}
+            </span>
+            <span className="comment-date">
+              {formatDate(comment.dateCreate, lang)}
+            </span>
+          </div>
+
+          <p className="comment-text">{comment.text}</p>
+          <button
+            className="comment-replyBtn"
+            type="button"
+            onClick={() => onReplyClick(comment)}
           >
-            {comment.author.profile.name}
-          </span>
-          <span className="comment-date">
-            {formatDate(comment.dateCreate, lang)}
-          </span>
+            {t("comments.answerBtn")}
+          </button>
         </div>
+      </CommentLayout>
 
-        <p className="comment-text">{comment.text}</p>
-        <button
-          className="comment-replyBtn"
-          type="button"
-          onClick={onReplyClick}
+      {isReplyFormVisible && (
+        <CommentLayout
+          level={selectedComment ? selectedComment.level + 1 : comment.level}
         >
-          {t("comments.answerBtn")}
-        </button>
-        {isAuth
-          ? isReplyFormVisible && (
-              <CommentForm
-                commentId={comment._id}
-                setFormValue={setFormValue}
-                formValue={formValue}
-                submitForm={submitForm}
-                label={t("comments.newReplyTitle")}
-                isResetButtonActive={true}
-                onResetReplyForm={onResetReplyForm}
-                t={t}
-              />
-            )
-          : isReplyFormVisible && (
-              <CommentNotAuth
-                actionText={t("comments.authErr.reply")}
-                isResetButtonActive={true}
-                onResetReplyForm={onResetReplyForm}
-                t={t}
-              />
-            )}
-
-        {comment.parent && (
-          <CommentList comments={comment.parent} level={level + 1} />
-        )}
-      </div>
-    </CommentLayout>
+          {isAuth ? (
+            <CommentForm
+              smoothScrollElementRef={smoothScrollElementRef}
+              setFormValue={setFormValue}
+              formValue={formValue}
+              submitForm={submitForm}
+              label={t("comments.newReplyTitle")}
+              isResetButtonActive={true}
+              onResetReplyForm={onResetReplyForm}
+              t={t}
+            />
+          ) : (
+            <CommentNotAuth
+              smoothScrollElementRef={smoothScrollElementRef}
+              actionText={t("comments.authErr.reply")}
+              isResetButtonActive={true}
+              onResetReplyForm={onResetReplyForm}
+              t={t}
+            />
+          )}
+        </CommentLayout>
+      )}
+    </>
   );
 };
 
 CommentItem.propTypes = {
   currentUsername: PropTypes.string,
   formValue: PropTypes.string,
-  level: PropTypes.number,
+  lang: PropTypes.string,
   isAuth: PropTypes.bool,
   isReplyFormVisible: PropTypes.bool,
   comment: PropTypes.object,
@@ -88,10 +92,15 @@ CommentItem.propTypes = {
   onResetReplyForm: PropTypes.func,
   setFormValue: PropTypes.func,
   submitForm: PropTypes.func,
+  t: PropTypes.func,
+  smoothScrollElementRef: PropTypes.object,
+  selectedComment: PropTypes.object,
 };
 
 CommentItem.defaultProps = {
+  selectedComment: null,
   onReplyClick: () => {},
+  t: () => {},
   onResetReplyForm: () => {},
   setFormValue: () => {},
   submitForm: () => {},

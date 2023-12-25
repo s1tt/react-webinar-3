@@ -1,26 +1,32 @@
 import PropTypes from "prop-types";
-import React from "react";
-import { useParams } from "react-router";
+import React, { useEffect } from "react";
 import "./styles.css";
 
 const CommentForm = ({
-  commentId = null,
-  setFormValue,
   formValue,
-  submitForm,
   label,
-  isResetButtonActive = false,
+  isResetButtonActive,
+  setFormValue,
+  submitForm,
   onResetReplyForm,
-  className,
+  smoothScrollElementRef,
   t,
 }) => {
-  const { id } = useParams();
-  const parentId = isResetButtonActive ? commentId : id;
-  const type = isResetButtonActive ? "comment" : "article";
+  useEffect(() => {
+    if (smoothScrollElementRef && smoothScrollElementRef.current) {
+      smoothScrollElementRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
+      });
+    }
+  }, [smoothScrollElementRef]);
+
   return (
     <form
       className="commentForm"
-      onSubmit={(e) => submitForm(e, parentId, type)}
+      onSubmit={submitForm}
+      ref={smoothScrollElementRef}
     >
       <label className="commentForm-label" htmlFor="newComment">
         {label}
@@ -54,19 +60,23 @@ const CommentForm = ({
 };
 
 CommentForm.propTypes = {
-  commentId: PropTypes.string,
   formValue: PropTypes.string,
   label: PropTypes.string,
   isResetButtonActive: PropTypes.bool,
   setFormValue: PropTypes.func,
   submitForm: PropTypes.func,
   onResetReplyForm: PropTypes.func,
+  smoothScrollElementRef: PropTypes.object,
+  t: PropTypes.func,
 };
 
 CommentForm.defaultProps = {
+  isResetButtonActive: false,
+  smoothScrollElementRef: null,
   setFormValue: () => {},
   submitForm: () => {},
   onResetReplyForm: () => {},
+  t: () => {},
 };
 
 export default CommentForm;

@@ -1,17 +1,29 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
 
 const CommentNotAuth = ({
+  smoothScrollElementRef,
   actionText,
   isResetButtonActive,
   onResetReplyForm,
   t,
 }) => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (smoothScrollElementRef && smoothScrollElementRef.current) {
+      smoothScrollElementRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
+      });
+    }
+  }, [smoothScrollElementRef]);
+
   return (
-    <p className="commentNotAuth">
+    <p className="commentNotAuth" ref={smoothScrollElementRef} tabIndex="0">
       <button
         className="commentNotAuth-link"
         onClick={() =>

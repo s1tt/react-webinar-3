@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import PropTypes from "prop-types";
+import React, { useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import CommentForm from "../../components/comment-form";
 import CommentList from "../../components/comment-list";
 import CommentNotAuth from "../../components/comment-notAuth";
@@ -12,24 +14,41 @@ const Comments = ({
   dispatch,
   currentUsername,
 }) => {
-  const [selectedCommentId, setSelectedCommentId] = useState(null);
+  const [selectedComment, setSelectedComment] = useState(null);
   const [formValue, setFormValue] = useState("");
   const { t, lang } = useTranslate();
+  const { id: paramsId } = useParams();
+  const smoothScrollElementRef = useRef(null);
 
   const callbacks = {
-    onReplyClick: (commentId) => {
+    onReplyClick: (comment) => {
       setFormValue("");
-      setSelectedCommentId(commentId);
+      setSelectedComment(comment);
     },
     onResetReplyForm: () => {
       setFormValue("");
-      setSelectedCommentId(null);
+      setSelectedComment(null);
     },
-    onSubmitForm: (e, parentId, type) => {
+    onSubmitForm: (e) => {
       e.preventDefault();
       const text = e.target.newComment.value.trim();
+      let parentId = "";
+      let type = "";
+
+      if (selectedComment) {
+        parentId = selectedComment._id;
+        type = "comment";
+      } else {
+        parentId = paramsId;
+        type = "article";
+      }
+
       if (text) {
-        dispatch(articleActions.newComment(parentId, type, text));
+        try {
+          dispatch(articleActions.newComment(parentId, type, text));
+        } catch (error) {
+          console.log(error);
+        }
       }
       setFormValue("");
     },
@@ -38,11 +57,12 @@ const Comments = ({
   return (
     <div className="comments">
       <CommentList
+        smoothScrollElementRef={smoothScrollElementRef}
         currentUsername={currentUsername}
         comments={sortedComments}
         commentsCount={commentsCount}
         isAuth={isAuth}
-        selectedCommentId={selectedCommentId}
+        selectedComment={selectedComment}
         setFormValue={setFormValue}
         formValue={formValue}
         submitForm={callbacks.onSubmitForm}
@@ -51,13 +71,13 @@ const Comments = ({
         t={t}
         lang={lang}
       />
-      {!!!selectedCommentId &&
+      {!selectedComment &&
         (isAuth ? (
           <CommentForm
-            setFormValue={setFormValue}
             formValue={formValue}
-            submitForm={callbacks.onSubmitForm}
             label={t("comments.newCommentTitle")}
+            setFormValue={setFormValue}
+            submitForm={callbacks.onSubmitForm}
             t={t}
           />
         ) : (
@@ -65,6 +85,18 @@ const Comments = ({
         ))}
     </div>
   );
+};
+
+Comments.propTypes = {
+  sortedComments: PropTypes.array,
+  commentsCount: PropTypes.number,
+  isAuth: PropTypes.bool,
+  dispatch: PropTypes.func,
+  currentUsername: PropTypes.string,
+};
+
+Comments.defaultProps = {
+  dispatch: () => {},
 };
 
 export default Comments;

@@ -30,11 +30,19 @@ function Article() {
   const { t, lang } = useTranslate();
 
   useInit(() => {
-    dispatch(articleActions.load(params.id));
+    try {
+      dispatch(articleActions.load(params.id));
+    } catch (error) {
+      console.log(error);
+    }
   }, [params.id, lang]);
 
   useInit(() => {
-    dispatch(commentsActions.load(params.id));
+    try {
+      dispatch(commentsActions.load(params.id));
+    } catch (error) {
+      console.log(error);
+    }
   }, [params.id]);
 
   const selectRedux = useSelectorRedux(
@@ -68,6 +76,8 @@ function Article() {
       text: comment.text,
       dateCreate: comment.dateCreate,
       level: level - 1,
+      lastChildId: comment.children[comment.children.length - 1]?._id,
+      parentId: comment.parent?._id,
     })).slice(1);
   }, [selectRedux.comments]);
 

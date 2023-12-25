@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 10px;
   margin-top: 28px;
+  margin-bottom: 27px;
 }
 
 .commentForm-label {
@@ -30,12 +31,13 @@
   height: 67px;
 }
 
-.commentForm-btn {
-  align-self: flex-start;
-  padding: 2px 10px;
-}
-
 .commentForm-btns {
   display: flex;
   gap: 10px;
+}
+
+.commentForm-btn {
+  align-self: flex-start;
+  padding: 2px 10px;
+  cursor: pointer;
 }
