@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./styles.css";
 
 const CommentNotAuth = ({
@@ -9,11 +9,17 @@ const CommentNotAuth = ({
   onResetReplyForm,
   t,
 }) => {
+  const navigate = useNavigate();
   return (
     <p className="commentNotAuth">
-      <Link className="commentNotAuth-link" to={"/login"}>
+      <button
+        className="commentNotAuth-link"
+        onClick={() =>
+          navigate("/login", { state: { back: location.pathname } })
+        }
+      >
         {t("comments.authErr.login")},
-      </Link>
+      </button>
       {t("comments.authErr.toBeAbleTo")} {actionText}
       {isResetButtonActive && (
         <button

@@ -27,8 +27,10 @@ const Comments = ({
     },
     onSubmitForm: (e, parentId, type) => {
       e.preventDefault();
-      const text = e.target.newComment.value;
-      dispatch(articleActions.newComment(parentId, type, text));
+      const text = e.target.newComment.value.trim();
+      if (text) {
+        dispatch(articleActions.newComment(parentId, type, text));
+      }
       setFormValue("");
     },
   };

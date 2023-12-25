@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { formatDate } from "../../utils/date-format";
 import CommentForm from "../comment-form";
+import CommentLayout from "../comment-layout";
 import CommentList from "../comment-list";
 import CommentNotAuth from "../comment-notAuth";
 import "./styles.css";
@@ -21,52 +22,58 @@ const CommentItem = ({
   lang,
 }) => {
   return (
-    <div className="comment" style={{ marginLeft: level * 30 }}>
-      <div className="comment-info">
-        <span
-          className={`comment-user ${
-            comment.author.profile.name === currentUsername
-              ? "comment-currentUser"
-              : ""
-          }`}
+    <CommentLayout level={level}>
+      <div className="comment">
+        <div className="comment-info">
+          <span
+            className={`comment-user ${
+              comment.author.profile.name === currentUsername
+                ? "comment-currentUser"
+                : ""
+            }`}
+          >
+            {comment.author.profile.name}
+          </span>
+          <span className="comment-date">
+            {formatDate(comment.dateCreate, lang)}
+          </span>
+        </div>
+
+        <p className="comment-text">{comment.text}</p>
+        <button
+          className="comment-replyBtn"
+          type="button"
+          onClick={onReplyClick}
         >
-          {comment.author.profile.name}
-        </span>
-        <span className="comment-date">
-          {formatDate(comment.dateCreate, lang)}
-        </span>
+          {t("comments.answerBtn")}
+        </button>
+        {isAuth
+          ? isReplyFormVisible && (
+              <CommentForm
+                commentId={comment._id}
+                setFormValue={setFormValue}
+                formValue={formValue}
+                submitForm={submitForm}
+                label={t("comments.newReplyTitle")}
+                isResetButtonActive={true}
+                onResetReplyForm={onResetReplyForm}
+                t={t}
+              />
+            )
+          : isReplyFormVisible && (
+              <CommentNotAuth
+                actionText={t("comments.authErr.reply")}
+                isResetButtonActive={true}
+                onResetReplyForm={onResetReplyForm}
+                t={t}
+              />
+            )}
+
+        {comment.parent && (
+          <CommentList comments={comment.parent} level={level + 1} />
+        )}
       </div>
-
-      <p className="comment-text">{comment.text}</p>
-      <button className="comment-replyBtn" type="button" onClick={onReplyClick}>
-        {t("comments.answerBtn")}
-      </button>
-      {isAuth
-        ? isReplyFormVisible && (
-            <CommentForm
-              commentId={comment._id}
-              setFormValue={setFormValue}
-              formValue={formValue}
-              submitForm={submitForm}
-              label={t("comments.newReplyTitle")}
-              isResetButtonActive={true}
-              onResetReplyForm={onResetReplyForm}
-              t={t}
-            />
-          )
-        : isReplyFormVisible && (
-            <CommentNotAuth
-              actionText={t("comments.authErr.reply")}
-              isResetButtonActive={true}
-              onResetReplyForm={onResetReplyForm}
-              t={t}
-            />
-          )}
-
-      {comment.parent && (
-        <CommentList comments={comment.parent} level={level + 1} />
-      )}
-    </div>
+    </CommentLayout>
   );
 };
 
